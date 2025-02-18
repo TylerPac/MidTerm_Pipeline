@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    environment {
+        GIT_CREDENTIALS = credentials('github-token')
+    }
     tools {
         maven 'Maven 3'
     }
@@ -8,7 +10,8 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/TylerPac/MidTerm_Pipeline.git'
+                
+                git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git'
             }
         }
 

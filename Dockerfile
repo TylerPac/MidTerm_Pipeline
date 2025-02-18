@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/my-app-1.0-SNAPSHOT.jar app.jar
 
 # Expose port 8080 (if your app runs a web server)
-EXPOSE 8080
+EXPOSE 9090
 
 # Run the application
 CMD ["java", "-jar", "app.jar"]

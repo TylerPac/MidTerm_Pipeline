@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'your-dockerhub-username/midterm_pipeline'
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        MAVEN_HOME = "/usr/share/maven"  // Set the correct Maven path
-        PATH = "$MAVEN_HOME/bin:$PATH"
+        MAVEN_HOME = "/usr/share/maven"
+        PATH = "$MAVEN_HOME/bin:/usr/bin:/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/sbin:/bin"
     }
 
     stages {
@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'  // Jenkins should now find Maven
+                sh '/usr/bin/mvn clean package'  // Explicitly use Maven's path
             }
         }
 

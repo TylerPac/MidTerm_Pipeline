@@ -37,7 +37,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t $DOCKER_IMAGE .'
+                bat 'docker build -t %DOCKER_IMAGE% .'
             }
         }
 
@@ -50,7 +50,8 @@ pipeline {
                 '''
 
                 // Run new container
-                bat 'docker run -d --name $CONTAINER_NAME -p 8080:8080 $DOCKER_IMAGE'
+                bat 'docker run -d --name %CONTAINER_NAME% -p 8080:8080 %DOCKER_IMAGE%'
+
             }
         }
     }

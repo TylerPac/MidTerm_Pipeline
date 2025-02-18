@@ -1,10 +1,14 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven 3' // This must match the name in your Jenkins Maven configuration
+    }
+
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()  // Deletes the workspace before checking out code
+                cleanWs()  // Deletes all files before fetching new code
             }
         }
 

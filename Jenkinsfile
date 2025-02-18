@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh '/opt/maven/bin/mvn clean package'  // Explicitly use Maven's path
+                sh 'mvn clean package'  // Maven should be available now
             }
         }
 

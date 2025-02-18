@@ -44,14 +44,13 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 // Stop and remove existing container (if running)
-                 bat '''
+                bat '''
                 docker stop %CONTAINER_NAME% || exit 0
                 docker rm %CONTAINER_NAME% || exit 0
                 '''
 
-                // Run new container
-                bat 'docker run -d --name %CONTAINER_NAME% -p 8080:8080 %DOCKER_IMAGE%'
-
+                // Run new container with a different external port (e.g., 9090)
+                bat 'docker run -d --name %CONTAINER_NAME% -p 9090:8080 %DOCKER_IMAGE%'
             }
         }
     }

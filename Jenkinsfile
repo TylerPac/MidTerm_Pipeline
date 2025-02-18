@@ -44,9 +44,9 @@ pipeline {
         stage('Deploy Application') {
             steps {
                 // Stop and remove existing container (if running)
-                bat '''
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
+                 bat '''
+                docker stop %CONTAINER_NAME% || exit 0
+                docker rm %CONTAINER_NAME% || exit 0
                 '''
 
                 // Run new container

@@ -14,6 +14,11 @@ pipeline {
                 git credentialsId: 'github-token', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git', branch: 'main'
             }
         }
+        stage('Check Maven Installation') {
+            steps {
+                sh 'mvn -version'
+            }
+        }
 
         stage('Build with Maven') {
             steps {

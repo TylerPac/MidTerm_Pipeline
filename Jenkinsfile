@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'your-dockerhub-username/midterm_pipeline'  // Replace with your actual Docker Hub username and image name
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'           // Docker Hub credentials in Jenkins
-        MAVEN_HOME = "/opt/maven"  // Set Maven path to the location inside the Jenkins container
-        PATH = "$MAVEN_HOME/bin:$PATH"  // Add Maven to the PATH
+        DOCKER_IMAGE = 'your-dockerhub-username/midterm_pipeline'
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
+        MAVEN_HOME = "/opt/maven"  // Correct Maven path
+        PATH = "$MAVEN_HOME/bin:$PATH"
     }
 
     stages {
@@ -17,29 +17,20 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                script {
-                    // Make sure to run Maven with the correct path
-                    sh "$MAVEN_HOME/bin/mvn clean package"  // Using Maven from $MAVEN_HOME
-                }
+                sh '/opt/maven/bin/mvn clean package'  // Explicitly use Maven's path
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Building Docker image using the specified tag
-                    sh "docker build -t $DOCKER_IMAGE ."
-                }
+                sh "docker build -t $DOCKER_IMAGE ."
             }
         }
 
         stage('Push to Docker Hub') {
             steps {
-                script {
-                    // Push the Docker image to Docker Hub
-                    withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS_ID", url: "https://index.docker.io/v1/"]) {
-                        sh "docker push $DOCKER_IMAGE"
-                    }
+                withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS_ID", url: ""]) {
+                    sh "docker push $DOCKER_IMAGE"
                 }
             }
         }

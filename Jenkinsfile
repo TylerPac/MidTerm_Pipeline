@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: 'github-credentials', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git', branch: 'main'
+                git credentialsId: 'github-token', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git', branch: 'main'
             }
         }
 

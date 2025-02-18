@@ -4,7 +4,7 @@ pipeline {
     environment {
         MAVEN_HOME = '/usr/share/maven'  // Correct Maven installation path
         PATH = "$MAVEN_HOME/bin:$PATH"  // Add Maven to PATH
-        DOCKER_IMAGE = 'your-dockerhub-username/midterm_pipeline'
+        DOCKER_IMAGE = 'jenkins-with-maven'
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
     }
 

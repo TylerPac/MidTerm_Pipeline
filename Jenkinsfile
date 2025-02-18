@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'your-dockerhub-username/midterm_pipeline'
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        MAVEN_HOME = "/opt/maven"  // Maven path in the container
-        PATH = "$MAVEN_HOME/bin:$PATH"
+        MAVEN_HOME = "/opt/maven"  // Set Maven path
+        PATH = "$MAVEN_HOME/bin:$PATH"  // Ensure Maven is in the path
     }
 
     stages {
@@ -17,7 +17,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'  // Use Maven in the path
+                sh 'mvn clean package'  // Run Maven
             }
         }
 

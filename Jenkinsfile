@@ -15,7 +15,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh '/usr/bin/mvn clean package'
+                sh 'export PATH=$PATH:/usr/bin && mvn clean package'
             }
         }
 

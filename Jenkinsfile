@@ -2,13 +2,18 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3' // This must match the name in your Jenkins Maven configuration
+        maven 'Maven 3' // Ensure this matches the name in Jenkins
+    }
+
+    environment {
+        DOCKER_IMAGE = 'my-maven-app'
+        CONTAINER_NAME = 'maven-app-container'
     }
 
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()  // Deletes all files before fetching new code
+                cleanWs()
             }
         }
 
@@ -32,13 +37,20 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t my-maven-app .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Deploy Application') {
             steps {
-                sh 'docker run -d -p 8080:8080 my-maven-app'
+                // Stop and remove existing container (if running)
+                sh '''
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                '''
+
+                // Run new container
+                sh 'docker run -d --name $CONTAINER_NAME -p 8080:8080 $DOCKER_IMAGE'
             }
         }
     }

@@ -1,45 +1,38 @@
 pipeline {
-    agent {
-        docker { image 'jenkins-with-maven' }  // Specify your custom image
-    }
+    agent any
 
-    environment {
-        MAVEN_HOME = '/usr/share/maven'  // Correct Maven installation path
-        PATH = "$MAVEN_HOME/bin:$PATH"  // Add Maven to PATH
-        DOCKER_IMAGE = 'jenkins-with-maven'  // Custom Docker image
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'  // Docker credentials
+    tools {
+        maven 'Maven 3'
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: 'github-token', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git', branch: 'main'
-            }
-        }
-
-        stage('Check Maven Installation') {
-            steps {
-                sh 'mvn -version'  // Ensure Maven is available
+                git 'https://github.com/TylerPac/MidTerm_Pipeline.git'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'  // Build the project with Maven
+                sh 'mvn clean package'
+            }
+        }
+
+        stage('Run Unit Tests') {
+            steps {
+                sh 'mvn test'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t $DOCKER_IMAGE ."
+                sh 'docker build -t my-maven-app .'
             }
         }
 
-        stage('Push to Docker Hub') {
+        stage('Deploy Application') {
             steps {
-                withDockerRegistry([credentialsId: "$DOCKER_CREDENTIALS_ID", url: ""]) {
-                    sh "docker push $DOCKER_IMAGE"
-                }
+                sh 'docker run -d -p 8080:8080 my-maven-app'
             }
         }
     }

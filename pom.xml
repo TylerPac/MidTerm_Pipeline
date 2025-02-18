@@ -91,7 +91,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>com.yourpackage.MainClass</mainClass>
+                        <mainClass>com.mycompany.app.MainClass</mainClass>
                     </manifest>
                 </archive>
             </configuration>

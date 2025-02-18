@@ -8,9 +8,13 @@ pipeline {
     }
 
     stages {
+        stage('Cleanup Workspace') {
+            steps {
+                cleanWs()  // This will delete the workspace before pulling fresh code
+            }
+        }
         stage('Checkout Code') {
             steps {
-                
                 git branch: 'main', credentialsId: 'github-token', url: 'https://github.com/TylerPac/MidTerm_Pipeline.git'
             }
         }

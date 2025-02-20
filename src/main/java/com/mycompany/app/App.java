@@ -1,5 +1,6 @@
 package com.mycompany.app;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -19,8 +20,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/tasks")
 public class App {
-    private List<String> tasks = new ArrayList<>();
-
+    private List<String> tasks;
+    @PostConstruct
+    public void init() {
+        tasks = new ArrayList<>();
+    }
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
@@ -30,7 +34,7 @@ public class App {
     }
 
     @PostMapping("/add")
-    public String addTask(@RequestParam String task) {
+    public String addTask(@RequestParam(name = "task") String task) {
         if (task != null && !task.trim().isEmpty()) {
             tasks.add(task);
             return "Task added: " + task;

@@ -29,6 +29,12 @@ pipeline {
             }
         }
 
+        stage('Verify Build Artifacts') {
+            steps {
+                bat 'if not exist target\\my-app-1.0-SNAPSHOT.jar exit 1'
+            }
+        }
+
         stage('Run Unit Tests') {
             steps {
                 bat 'mvn test'
@@ -43,15 +49,19 @@ pipeline {
 
         stage('Deploy Application') {
             steps {
-                // Stop and remove existing container (if running)
                 bat '''
-                docker stop %CONTAINER_NAME% || exit 0
-                docker rm %CONTAINER_NAME% || exit 0
+                docker stop -f %CONTAINER_NAME% || echo "No running container to stop"
+                docker rm %CONTAINER_NAME% || echo "No existing container to remove"
+                docker run -d --name %CONTAINER_NAME% -p 9090:9090 %DOCKER_IMAGE%
                 '''
-
-                // Run new container with a different external port (e.g., 9090)
-                bat 'docker run -d --name %CONTAINER_NAME% -p 9090:9090 %DOCKER_IMAGE%'
             }
         }
+        stage('Debugging Info') {
+            steps {
+                bat 'docker ps -a'
+                bat 'docker logs %CONTAINER_NAME%'
+            }
+        }
+
     }
 }

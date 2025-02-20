@@ -1,19 +1,42 @@
+
 package com.mycompany.app;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
+    private App app;
 
-    /**
-     * Rigorous Test :-)
-     */
+    @BeforeEach
+    public void setUp() {
+        app = new App();
+    }
+
     @Test
-    public void shouldAnswerWithTrue() {
-        assertTrue(true);
+    public void testAddTask() {
+        app.addTask("Buy groceries");
+        assertTrue(app.containsTask("Buy groceries"));
+    }
+
+    @Test
+    public void testRemoveTask() {
+        app.addTask("Buy groceries");
+        app.removeTask("Buy groceries");
+        assertFalse(app.containsTask("Buy groceries"));
+    }
+
+    @Test
+    public void testGetTasks() {
+        app.addTask("Buy groceries");
+        app.addTask("Walk the dog");
+        assertEquals(2, app.getTasks().size());
+    }
+
+    @Test
+    public void testAddInvalidTask() {
+        app.addTask("");
+        app.addTask(null);
+        assertTrue(app.getTasks().isEmpty());
     }
 }

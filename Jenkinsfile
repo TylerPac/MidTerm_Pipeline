@@ -25,7 +25,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean package spring-boot:repackage'
             }
         }
 
